@@ -1,0 +1,30 @@
+syms s;
+T = [1/((s + 1)*(s+3)) (s-2)/((s + 1) * (s + 2))];
+[line col] = size(T);
+[m(1), n(1)] = numden(T(1,1));
+[m(2), n(2)] = numden(T(1,2));
+cmmmc = lcm(n);
+r = polynomialDegree(cmmmc);
+alpha = sym2poly(cmmmc);
+new_T = T * cmmmc;
+c1 = coeffs(new_T(1));
+c2 = coeffs(new_T(2));
+R_0 = [c1(1), c2(1)];
+R_1 = [c1(2), c2(2)];
+R_2 = [0, c2(3)];
+A_c = [zeros(col) eye(col) zeros(col); zeros(col) zeros(col) eye(col); -alpha(4) * eye(col) -alpha(3) * eye(col) -alpha(2) * eye(col)];
+B_c = [zeros(col); zeros(col); eye(col)];
+C_c = [R_0 R_1 R_2];
+D_c = [0 0];
+A_o = [0 0 -alpha(4) * eye(line); 1 0 -alpha(3) * eye(line); 0 1 -alpha(2) * eye(line)];
+B_o = [R_0; R_1; R_2];
+C_o = [0 0 eye(line)];
+D_o = [0 0];
+
+A_c = double(A_c);
+B_c = double(B_c);
+C_c = double(C_c);
+
+A_o = double(A_o);
+B_o = double(B_o);
+C_o = double(C_o);
